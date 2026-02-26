@@ -1,9 +1,12 @@
-# Pasos de uso 
+# Chat_lora32 - Guía de Uso
 
+## Pasos para ejecutar el proyecto
 
+1. Configurar WiFi y pines LoRa
 
-1.- Configurar la conexión WiFi y los pines de comunicación LoRa
-```
+Configurar las credenciales WiFi y los pines de comunicación del módulo LoRa:
+
+```bash
 idf.py menuconfig
 ```
 

@@ -9,7 +9,11 @@
 #include "protocol_examples_common.h"
 #include "esp_http_server.h"
 
-#define MESSAGE_LENGTH 240
+#define MESSAGE_LENGTH 240 // Tamaño máximo del paquete LoRa
+
+
+// Archivos web embebidos en memoria (HTML y logo)
+
 
 extern const char index_start[] asm("_binary_index_html_start");
 extern const char index_end[] asm("_binary_index_html_end");
@@ -18,31 +22,44 @@ extern const char logo_end[] asm("_binary_logo_png_end");
 
 SSD1306_t screen;
 TaskHandle_t xHandleRXTask;
-uint8_t msg[MESSAGE_LENGTH];
-int packets = 0;
-int rssi = 0;
+uint8_t msg[MESSAGE_LENGTH]; // Buffer de mensaje LoRa
+int packets = 0; // Contador de paquetes recibidos
+int rssi = 0; // Intensidad de señal
+
+
+/* ==================== OLED ==================== */
+
+// Inicializa pantalla OLED por I2C
 
 void screen_init() {
   i2c_master_init(&screen, CONFIG_SDA_GPIO, CONFIG_SCL_GPIO, CONFIG_RESET_GPIO);
   ssd1306_init(&screen, 128, 64);
   ssd1306_contrast(&screen, 0xFF);
 }
+// Limpia toda la pantalla
 
 void screen_clear() {
   ssd1306_clear_screen(&screen, false);
 }
+
+// Imprime texto en una página (0–7)
 
 void screen_print(char * str, int page) {
   ssd1306_clear_line(&screen, page, false);
   ssd1306_display_text(&screen, page, str, strlen(str), false);
 }
 
+/* ==================== LORA ==================== */
+
+// Tarea que recibe paquetes LoRa continuamente.
+// Actualiza RSSI y contador en la OLED.
+
 void task_rx(void *p) {
   char packets_count[64];
   char rssi_str[64];
   int len;
   for(;;) {
-    lora_receive();
+    lora_receive(); // Activa modo recepción
     while(lora_received()) {
       len = lora_receive_packet(msg, MESSAGE_LENGTH);
       msg[len] = 0;
@@ -61,6 +78,9 @@ void task_rx(void *p) {
   }
 }
 
+// Envía mensaje por LoRa.
+// Suspende RX para evitar conflictos durante transmisión.
+
 void send_msg(char * msg, int size) {
   printf("send packet: %s\n", msg);
   vTaskSuspend(xHandleRXTask);
@@ -75,15 +95,20 @@ void task_tx(void *p) {
     vTaskDelay(2000 / portTICK_PERIOD_MS);
   }
 }
+// Configura módulo LoRa y crea tarea de recepción
 
 void lora_config_init() {
   printf("lora config init!\n");
   lora_init();
-  lora_set_frequency(915e6);
-  lora_enable_crc();
+  lora_set_frequency(915e6); // Frecuencia 915 MHz
+  lora_enable_crc(); // Activa verificación CRC
   xTaskCreate(&task_rx, "task_rx", 2048, NULL, 5, &xHandleRXTask);
   // xTaskCreate(&task_tx, "task_tx", 2048, NULL, 5, NULL);
 }
+
+
+/* ==================== SERVIDOR WEB ==================== */
+
 
 static esp_err_t home_get_handler(httpd_req_t *req) {
   httpd_resp_set_type(req, "text/html");
@@ -186,6 +211,10 @@ void web_server_init() {
 
   printf("Error al iniciar servidor\n");
 }
+
+
+/* ==================== MAIN ==================== */
+
 
 
 void app_main(void) {
