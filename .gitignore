@@ -1,0 +1,86 @@
+*/build
+
+# =========================
+# ESP-IDF
+# =========================
+
+# Build output
+/build/
+/build_*/
+/dist/
+/sdkconfig.old
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+# Logs
+*.log
+
+# Flash/partition binaries
+*.bin
+*.elf
+*.map
+
+# SDK config (opcional)
+sdkconfig
+
+# =========================
+# PlatformIO
+# =========================
+
+.pio/
+.pioenvs/
+.piolibdeps/
+.vscode/.browse.c_cpp.db*
+
+# =========================
+# Arduino ESP32
+# =========================
+
+*.ino.cpp
+*.ino.cpp.o
+
+# =========================
+# Archivos temporales
+# =========================
+
+*.o
+*.obj
+*.d
+*.a
+*.so
+*.exe
+*.dll
+
+# =========================
+# Sistema Operativo
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDEs
+# =========================
+
+# VSCode
+.vscode/
+
+# CLion
+.idea/
+
+# Eclipse
+.metadata/
+
+# =========================
+# Python (si usas herramientas ESP-IDF)
+# =========================
+
+venv/
+.env/
+__pycache__/
+*.pyc
