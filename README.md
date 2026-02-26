@@ -128,7 +128,7 @@ idf.py monitor
 
 ## Contacto
 
-Para cualquier pregunta o comentario, no dudes en ponerte en contacto con los autores:
+Para cualquier pregunta o comentario, no dudes en ponerte en contacto :
 
 
 Julian Francisco Pinchao Ortiz
