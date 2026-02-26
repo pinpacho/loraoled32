@@ -107,3 +107,32 @@ idf.py build
 idf.py flash
 idf.py monitor
 ```
+
+## Requisitos de hardware
+
+- TTGO LILYGO LoRa32 (ESP32 + LoRa + OLED SSD1306)
+- Cable USB para programación y alimentación
+- Dos placas TTGO LoRa32 (recomendado para pruebas de comunicación LoRa)
+- Dispositivo móvil o PC con WiFi (para pruebas del servidor web)
+
+**En caso de no tener la TTGO LoRa32:**
+
+- ESP32
+- Módulo LoRa (por ejemplo SX1276 / SX1278)
+- Pantalla OLED SSD1306 (I2C, 128x64)
+
+---
+
+
+
+
+## Contacto
+
+Para cualquier pregunta o comentario, no dudes en ponerte en contacto con los autores:
+
+
+Julian Francisco Pinchao Ortiz
+
+Correo: jfrancisco.pinchao@udea.edu.co
+
+GitHub: https://github.com/pinpacho
